@@ -73,7 +73,3 @@ x = y; %x is now the integrated signal
 x_MWI = y;
 y = 0;
 
-%thresholding
-max_value = max(x_MWI(:));
-mean_value = mean(x_MWI(:));
-thresh = (x_MWI>610);
