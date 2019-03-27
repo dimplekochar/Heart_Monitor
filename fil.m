@@ -1,4 +1,4 @@
-x=ecg_sig; 
+x=ecg_sig -mean(ecg_sig); 
 %LPF 15Hz %y(n)= 2*y(n-1)-y(n-2)+x(n)-2*x(n-6)+x(n-12);
 y(1)=x(1);
 y(2)= 2*y(1)+x(2);
@@ -10,10 +10,11 @@ for n=7:12
 end
 for n=13:length(ecg_sig)
     y(n)= 2*y(n-1)-y(n-2)+x(n)-2*x(n-6)+x(n-12);
-end;
+end
 
 xorig=x; %original unfiltered signal
-x=y; %x is now Low Pass filtered 
+x=y/20; %x is now scaled and Low Pass filtered
+x_lpf = y/20;
 y=0;
 
 %HPF 5Hz %y(n)= 32*x(n-16)-y(n-1)-x(n)+x(n-32);
@@ -31,8 +32,8 @@ for n=33:length(ecg_sig)
 end;
 %y=y/580; %scale the gain
 
-xfilt=y; %BPF signal
-x=y;
+xfilt=y/20; %scaled and BPF signal
+x=y/20;
 y=0;
 
 %Differentiation %y(n)= (1/8)*(-x(n-2)-2*x(n-1)+2*x(n+1)+x(n+2));
@@ -52,5 +53,27 @@ y=0;
 %squaring
 for n=1:length(ecg_sig)
     y(n)= (x(n))^2;
-end;
+end
 
+x = y; %x now contains filtered and squared signal
+x_sq = y;
+y = zeros(1,3600);
+
+%MWI
+N = 28;
+for n = 1:length(ecg_sig)
+    for i = 0:(N-1)
+        if n-i>=1 % => assign value zero for negative indices in moving window
+            y(n) = y(n) + x(n-i)/N;
+        end
+    end
+end
+
+x = y; %x is now the integrated signal
+x_MWI = y;
+y = 0;
+
+%thresholding
+max_value = max(x_MWI(:));
+mean_value = mean(x_MWI(:));
+thresh = (x_MWI>610);
