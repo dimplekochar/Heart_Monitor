@@ -23,13 +23,14 @@ end;
 t_R = find(y); %t_R contains indices where x is non zero i.e. location R points
 for i = 1:length(t_R)-1
     RR(i) = (t_R(i+1)-t_R(i))/F_s; %calculation of RR intervals
+    HR(i)=1/RR(i);
 end
 
 
 %interpolation
 %hrvn = zeros(1,length(R_t));
 Dt = 0.5;
-sigpos = x;
+sigpos = RR;
 b = [1 -1];
 hrv1 = filter(b,1,sigpos);
 for t = 0:Dt:sigpos(length(sigpos))
