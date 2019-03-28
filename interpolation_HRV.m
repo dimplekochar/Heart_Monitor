@@ -22,14 +22,15 @@ for i=1:length(ecg_sig)
 end;
 t_R = find(y); %t_R contains indices where x is non zero i.e. location R points
 for i = 1:length(t_R)-1
-    RR(i) = (t_R(i+1)-t_R(i))/F_s; %calculation of RR intervals
+    RR(t_R(i)) = (t_R(i+1)-t_R(i))/F_s; %calculation of RR intervals
+    RR_int(i)= RR(t_R(i));
     HR(i)=1/RR(i);
 end
 
 
 %interpolation
 %hrvn = zeros(1,length(R_t));
-Dt = 0.5;
+Dt = (1/360);
 sigpos = RR;
 b = [1 -1];
 hrv1 = filter(b,1,sigpos);
