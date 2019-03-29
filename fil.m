@@ -57,7 +57,7 @@ end
 
 x = y; %x now contains filtered and squared signal
 x_sq = y;
-y = zeros(1,3600);
+y = zeros(1,length(ecg_sig));
 
 %MWI
 N = 28;

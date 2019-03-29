@@ -39,7 +39,7 @@ end
 % hrv1 = filter(b,1,sigpos);
 % for t = 0:Dt:sigpos(length(sigpos))
 %     if t<sigpos(1)
-%         vmin=1;
+%         vmin=1;y
 %     else
 %         v1=find(sigpos<=t);
 %         vmin=v1(length(v1));
@@ -56,10 +56,12 @@ end
 
 %interpolating signal by 2
 
-y = interp(RR_int,2);                        % Interpolated Signal
-subplot(211);
-stem(RR_int);
-title('Original Signal');
-subplot(212);
-stem(y);
-title('Interpolated Signal');
+y = interp(RR_int,round(length(ecg_sig)/length(RR_int)));                        % Interpolated Signal
+%subplot(211);
+%stem(RR_int);
+%title('Original Signal');
+%subplot(212);
+%stem(y);
+%title('Interpolated Signal');
+plot(y) %plot interpolated RR
+%periodogram(y,rectwin(length(y)),length(y),F_s) %to plot PSD
