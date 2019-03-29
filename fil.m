@@ -72,4 +72,4 @@ end
 x = y; %x is now the integrated signal
 x_MWI = y;
 y = 0;
-
+%plot(t,x);
